@@ -1,11 +1,10 @@
-const API = 'https://spotify23.p.rapidapi.com/artist_albums/?id=06HL4z0CvFAxyc27GXpf02&offset=0&limit=100';
 
+/*Options to get albums */
+const API = 'https://spotify23.p.rapidapi.com/artist_albums/?id=06HL4z0CvFAxyc27GXpf02&offset=0&limit=100';
 // HTML
 const Content_Albums = null || document.getElementById('Content_Albums')
 const AlbumsTitle = null || document.getElementById('AlbumsTitle')
-
 //
-
 const options = {
 	method: 'GET',
 	headers: {
@@ -14,6 +13,12 @@ const options = {
 	}
 };
 
+/*Options to get Songs */
+const APISongs = 'https://spotify23.p.rapidapi.com/artist_singles/?id=06HL4z0CvFAxyc27GXpf02&offset=0&limit=100';
+const Content_Songs = null || document.getElementById('Content_Songs')
+const SongsTitle= null || document.getElementById('SongsTitle')
+
+// Function to conect to the API
 async function fetchData(urlApi){
     const response =  await fetch(urlApi,options)
     const data = await response.json()
@@ -28,52 +33,15 @@ async function fetchData(urlApi){
  (async () => {
 
     try {
-
         /*
         To do:
-
         Álbunes() >> Listo, FAlta encapsular en función.
         Songs() >> Falta, Crar la función y adaptar la respuesta de la API
-
         */
+        Albums();
+        Songs()
 
 
-        const Data = await fetchData(API)
-        console.log(Data);
-
-        // CRear template html que itera por cada uno de los elementos que me regresa la solicitud
-        AlbumsTitle.innerText = `Albums: ${Data.data.artist.discography.albums.totalCount}`
-
-        let view = `
-        ${Data.data.artist.discography.albums.items.map(album => `
-        <div class="group relative">
-            <div
-                class="w-full bg-gray-200 aspect-w-1 aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 lg:aspect-none">
-                <img src="${album.releases.items[0].coverArt.sources[0].url}" alt="" class="w-full">
-            </div>
-            <div class="mt-4 flex justify-between">
-                <h3 class="text-sm text-gray-700" >
-                <span aria-hidden="true" class="absolute inset-0"></span>
-                ${album.releases.items[0].name}
-                </h3>
-            </div>
-            <div class="mt-4 flex justify-between">
-                <h3 class="text-sm text-gray-700" >
-                <span aria-hidden="true" class="absolute inset-0"></span>
-                ${album.releases.items[0].tracks.totalCount} Tracks
-                </h3>
-            </div>
-            <div class="mt-4 flex justify-between">
-                <a class="text-sm text-gray-700" href="${album.releases.items[0].sharingInfo.shareUrl}" style="cursor: pointer;" >
-                <span aria-hidden="true" class="absolute inset-0"></span>
-                </a>
-            </div>
-
-        </div>
-        `).join('')}
-        `;
-        //Vamos a agregar el nuevo html PAra los álbunes
-        Content_Albums.innerHTML = view;
         
     } catch (error) {
         console.log(error);
@@ -84,3 +52,78 @@ async function fetchData(urlApi){
  })();
 
 
+async function Albums(){
+
+    const Data = await fetchData(API)
+    console.log(Data);
+
+    // CRear template html que itera por cada uno de los elementos que me regresa la solicitud
+    AlbumsTitle.innerText = `Albums: ${Data.data.artist.discography.albums.totalCount}`
+
+    let view = `
+    ${Data.data.artist.discography.albums.items.map(album => `
+    <div class="group relative">
+        <div
+            class="w-full bg-gray-200 aspect-w-1 aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 lg:aspect-none">
+            <img src="${album.releases.items[0].coverArt.sources[0].url}" alt="" class="w-full">
+        </div>
+        <div class="mt-4 flex justify-between">
+            <h3 class="text-sm text-gray-700" >
+            <span aria-hidden="true" class="absolute inset-0"></span>
+            ${album.releases.items[0].name}
+            </h3>
+        </div>
+        <div class="mt-4 flex justify-between">
+            <h3 class="text-sm text-gray-700" >
+            <span aria-hidden="true" class="absolute inset-0"></span>
+            ${album.releases.items[0].tracks.totalCount} Tracks
+            </h3>
+        </div>
+        <div class="mt-4 flex justify-between">
+            <a class="text-sm text-gray-700" href="${album.releases.items[0].sharingInfo.shareUrl}" style="cursor: pointer;" >
+            <span aria-hidden="true" class="absolute inset-0"></span>
+            </a>
+        </div>
+
+    </div>
+    `).join('')}
+    `;
+    //Vamos a agregar el nuevo html PAra los álbunes
+    Content_Albums.innerHTML = view;
+
+}
+
+async function Songs(){
+
+    const Data = await fetchData(APISongs)
+    console.log(Data);
+
+    // CRear template html que itera por cada uno de los elementos que me regresa la solicitud
+    SongsTitle.innerText = `Artist singles: ${Data.data.artist.discography.singles.totalCount}`
+
+    let view = `
+    ${Data.data.artist.discography.singles.items.map(single => `
+    <div class="group relative">
+        <div
+            class="w-full bg-gray-200 aspect-w-1 aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 lg:aspect-none">
+            <img src="${single.releases.items[0].coverArt.sources[0].url}" alt="" class="w-full">
+        </div>
+        <div class="mt-4 flex justify-between">
+            <h3 class="text-sm text-gray-700" >
+            <span aria-hidden="true" class="absolute inset-0"></span>
+            ${single.releases.items[0].name}
+            </h3>
+        </div>
+        <div class="mt-4 flex justify-between">
+            <a class="text-sm text-gray-700" href="${single.releases.items[0].sharingInfo.shareUrl}" style="cursor: pointer;" >
+            <span aria-hidden="true" class="absolute inset-0"></span>
+            </a>
+        </div>
+
+    </div>
+    `).join('')}
+    `;
+    //Vamos a agregar el nuevo html PAra los álbunes
+    Content_Songs.innerHTML = view;
+
+}
