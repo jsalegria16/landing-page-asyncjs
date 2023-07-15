@@ -17,5 +17,8 @@
     "url": "https://github.com/jsalegria16/landing-page-asyncjs/issues"
   },
   "homepage": "https://github.com/jsalegria16/landing-page-asyncjs#readme",
-  "type": "module"
+  "type": "module",
+  "devDependencies": {
+    "gh-pages": "^5.0.0"
+  }
 }

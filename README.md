@@ -1,2 +1,4 @@
 # landing-page-asyncjs
-a landing page using async with JavaScript
+A landing page using async with JavaScript
+
+- In this case we´re showing taylor switf's albums and singles using the API of spotify with fetch() in JS.
